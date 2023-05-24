@@ -83,7 +83,7 @@ def film_update_wtf():
     form_update_film = FormWTFUpdateFilm()
     try:
         print(" on submit ", form_update_film.validate_on_submit())
-        if form_update_film.validate_on_submit():
+        if form_update_film.data:
             # Récupèrer la valeur du champ depuis "genre_update_wtf.html" après avoir cliqué sur "SUBMIT".
             nom_film_update = form_update_film.nom_film_update_wtf.data
 
@@ -105,7 +105,8 @@ def film_update_wtf():
             return redirect(url_for('films_genres_afficher', id_film_sel=id_film_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "weather_id" et "intitule_genre" de la "t_genre"
-            str_sql_id_film = "SELECT * FROM t_weather WHERE weather_id = %(value_id_film)s"
+            # str_sql_id_film = "SELECT * FROM t_weather WHERE weather_id = %(value_id_film)s"
+            str_sql_id_film = "SELECT * FROM t_weather WHERE weather_id = 3"
             valeur_select_dictionnaire = {"value_id_film": id_film_update}
             with DBconnection() as mybd_conn:
                 mybd_conn.execute(str_sql_id_film, valeur_select_dictionnaire)
