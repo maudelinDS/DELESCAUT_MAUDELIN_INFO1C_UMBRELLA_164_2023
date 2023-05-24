@@ -32,11 +32,11 @@ def films_genres_afficher(id_film_sel):
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
-                strsql_genres_films_afficher_data = """SELECT id_film, nom_film, duree_film, description_film, cover_link_film, date_sortie_film,
-                                                            GROUP_CONCAT(intitule_genre) as GenresFilms FROM t_genre_film
-                                                            RIGHT JOIN t_film ON t_film.id_film = t_genre_film.fk_film
-                                                            LEFT JOIN t_genre ON t_genre.activity_id = t_genre_film.fk_genre
-                                                            GROUP BY id_film"""
+                strsql_genres_films_afficher_data = """SELECT weather_id, weather_name,
+                                                            GROUP_CONCAT(weather_name) as ActivityWeather FROM t_activity_weather
+                                                            RIGHT JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
+                                                            LEFT JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
+                                                            GROUP BY weather_id"""
                 if id_film_sel == 0:
                     # le paramètre 0 permet d'afficher tous les films
                     # Sinon le paramètre représente la valeur de l'id du film
@@ -46,7 +46,7 @@ def films_genres_afficher(id_film_sel):
                     valeur_id_film_selected_dictionnaire = {"value_id_film_selected": id_film_sel}
                     # En MySql l'instruction HAVING fonctionne comme un WHERE... mais doit être associée à un GROUP BY
                     # L'opérateur += permet de concaténer une nouvelle valeur à la valeur de gauche préalablement définie.
-                    strsql_genres_films_afficher_data += """ HAVING id_film= %(value_id_film_selected)s"""
+                    strsql_genres_films_afficher_data += """ HAVING weather_id= %(value_id_film_selected)s"""
 
                     mc_afficher.execute(strsql_genres_films_afficher_data, valeur_id_film_selected_dictionnaire)
 
@@ -56,9 +56,9 @@ def films_genres_afficher(id_film_sel):
 
                 # Différencier les messages.
                 if not data_genres_films_afficher and id_film_sel == 0:
-                    flash("""La table "t_film" est vide. !""", "warning")
+                    flash("""La table "t_weather" est vide. !""", "warning")
                 elif not data_genres_films_afficher and id_film_sel > 0:
-                    # Si l'utilisateur change l'id_film dans l'URL et qu'il ne correspond à aucun film
+                    # Si l'utilisateur change l'weather_id dans l'URL et qu'il ne correspond à aucun film
                     flash(f"Le film {id_film_sel} demandé n'existe pas !!", "warning")
                 else:
                     flash(f"Données films et genres affichés !!", "success")
@@ -93,15 +93,15 @@ def edit_genre_film_selected():
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
-                strsql_genres_afficher = """SELECT activity_id, intitule_genre FROM t_genre ORDER BY activity_id ASC"""
+                strsql_genres_afficher = """SELECT activity_id, activity_name FROM t_activity ORDER BY activity_id ASC"""
                 mc_afficher.execute(strsql_genres_afficher)
             data_genres_all = mc_afficher.fetchall()
             print("dans edit_genre_film_selected ---> data_genres_all", data_genres_all)
 
-            # Récupère la valeur de "id_film" du formulaire html "films_genres_afficher.html"
-            # l'utilisateur clique sur le bouton "Modifier" et on récupère la valeur de "id_film"
+            # Récupère la valeur de "weather_id" du formulaire html "films_genres_afficher.html"
+            # l'utilisateur clique sur le bouton "Modifier" et on récupère la valeur de "weather_id"
             # grâce à la variable "id_film_genres_edit_html" dans le fichier "films_genres_afficher.html"
-            # href="{{ url_for('edit_genre_film_selected', id_film_genres_edit_html=row.id_film) }}"
+            # href="{{ url_for('edit_genre_film_selected', id_film_genres_edit_html=row.weather_id) }}"
             id_film_genres_edit = request.values['id_film_genres_edit_html']
 
             # Mémorise l'id du film dans une variable de session
@@ -121,7 +121,7 @@ def edit_genre_film_selected():
                 genres_films_afficher_data(valeur_id_film_selected_dictionnaire)
 
             print(data_genre_film_selected)
-            lst_data_film_selected = [item['id_film'] for item in data_genre_film_selected]
+            lst_data_film_selected = [item['weather_id'] for item in data_genre_film_selected]
             print("lst_data_film_selected  ", lst_data_film_selected,
                   type(lst_data_film_selected))
 
@@ -145,9 +145,9 @@ def edit_genre_film_selected():
             print(" data_genres_films_attribues ", data_genres_films_attribues, "type ",
                   type(data_genres_films_attribues))
 
-            # Extrait les valeurs contenues dans la table "t_genres", colonne "intitule_genre"
+            # Extrait les valeurs contenues dans la table "t_genres", colonne "activity_name"
             # Le composant javascript "tagify" pour afficher les tags n'a pas besoin de l'activity_id
-            lst_data_genres_films_non_attribues = [item['intitule_genre'] for item in data_genres_films_non_attribues]
+            lst_data_genres_films_non_attribues = [item['activity_name'] for item in data_genres_films_non_attribues]
             print("lst_all_genres gf_edit_genre_film_selected ", lst_data_genres_films_non_attribues,
                   type(lst_data_genres_films_non_attribues))
 
@@ -209,26 +209,26 @@ def update_genre_film_selected():
 
             # Pour apprécier la facilité de la vie en Python... "les ensembles en Python"
             # https://fr.wikibooks.org/wiki/Programmation_Python/Ensembles
-            # OM 2021.05.02 Une liste de "activity_id" qui doivent être effacés de la table intermédiaire "t_genre_film".
+            # OM 2021.05.02 Une liste de "activity_id" qui doivent être effacés de la table intermédiaire "t_activity_weather".
             lst_diff_genres_delete_b = list(set(old_lst_data_genres_films_attribues) -
                                             set(new_lst_int_genre_film_old))
             print("lst_diff_genres_delete_b ", lst_diff_genres_delete_b)
 
-            # Une liste de "activity_id" qui doivent être ajoutés à la "t_genre_film"
+            # Une liste de "activity_id" qui doivent être ajoutés à la "t_activity_weather"
             lst_diff_genres_insert_a = list(
                 set(new_lst_int_genre_film_old) - set(old_lst_data_genres_films_attribues))
             print("lst_diff_genres_insert_a ", lst_diff_genres_insert_a)
 
             # SQL pour insérer une nouvelle association entre
-            # "fk_film"/"id_film" et "fk_genre"/"activity_id" dans la "t_genre_film"
-            strsql_insert_genre_film = """INSERT INTO t_genre_film (id_genre_film, fk_genre, fk_film)
+            # "fk_film"/"weather_id" et "fk_genre"/"activity_id" dans la "t_activity_weather"
+            strsql_insert_genre_film = """INSERT INTO t_activity_weather (activity_weather_id, fk_activity, fk_weather,score)
                                                     VALUES (NULL, %(value_fk_genre)s, %(value_fk_film)s)"""
 
-            # SQL pour effacer une (des) association(s) existantes entre "id_film" et "activity_id" dans la "t_genre_film"
-            strsql_delete_genre_film = """DELETE FROM t_genre_film WHERE fk_genre = %(value_fk_genre)s AND fk_film = %(value_fk_film)s"""
+            # SQL pour effacer une (des) association(s) existantes entre "weather_id" et "activity_id" dans la "t_activity_weather"
+            strsql_delete_genre_film = """DELETE FROM t_activity_weather WHERE fk_activity = %(value_fk_genre)s AND fk_weather = %(value_fk_film)s"""
 
             with DBconnection() as mconn_bd:
-                # Pour le film sélectionné, parcourir la liste des genres à INSÉRER dans la "t_genre_film".
+                # Pour le film sélectionné, parcourir la liste des genres à INSÉRER dans la "t_activity_weather".
                 # Si la liste est vide, la boucle n'est pas parcourue.
                 for id_genre_ins in lst_diff_genres_insert_a:
                     # Constitution d'un dictionnaire pour associer l'id du film sélectionné avec un nom de variable
@@ -238,7 +238,7 @@ def update_genre_film_selected():
 
                     mconn_bd.execute(strsql_insert_genre_film, valeurs_film_sel_genre_sel_dictionnaire)
 
-                # Pour le film sélectionné, parcourir la liste des genres à EFFACER dans la "t_genre_film".
+                # Pour le film sélectionné, parcourir la liste des genres à EFFACER dans la "t_activity_weather".
                 # Si la liste est vide, la boucle n'est pas parcourue.
                 for id_genre_del in lst_diff_genres_delete_b:
                     # Constitution d'un dictionnaire pour associer l'id du film sélectionné avec un nom de variable
@@ -257,7 +257,7 @@ def update_genre_film_selected():
                                                    f"{update_genre_film_selected.__name__} ; "
                                                    f"{Exception_update_genre_film_selected}")
 
-    # Après cette mise à jour de la table intermédiaire "t_genre_film",
+    # Après cette mise à jour de la table intermédiaire "t_activity_weather",
     # on affiche les films et le(urs) genre(s) associé(s).
     return redirect(url_for('films_genres_afficher', id_film_sel=id_film_selected))
 
@@ -276,20 +276,20 @@ def genres_films_afficher_data(valeur_id_film_selected_dict):
     print("valeur_id_film_selected_dict...", valeur_id_film_selected_dict)
     try:
 
-        strsql_film_selected = """SELECT id_film, nom_film, duree_film, description_film, cover_link_film, date_sortie_film, GROUP_CONCAT(activity_id) as GenresFilms FROM t_genre_film
-                                        INNER JOIN t_film ON t_film.id_film = t_genre_film.fk_film
-                                        INNER JOIN t_genre ON t_genre.activity_id = t_genre_film.fk_genre
-                                        WHERE id_film = %(value_id_film_selected)s"""
+        strsql_film_selected = """SELECT weather_id, weather_name,  GROUP_CONCAT(activity_id) as ActivityWeather FROM t_activity_weather
+                                        INNER JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
+                                        INNER JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
+                                        WHERE weather_id = %(value_id_film_selected)s"""
 
-        strsql_genres_films_non_attribues = """SELECT activity_id, intitule_genre FROM t_genre WHERE activity_id not in(SELECT activity_id as idGenresFilms FROM t_genre_film
-                                                    INNER JOIN t_film ON t_film.id_film = t_genre_film.fk_film
-                                                    INNER JOIN t_genre ON t_genre.activity_id = t_genre_film.fk_genre
-                                                    WHERE id_film = %(value_id_film_selected)s)"""
+        strsql_genres_films_non_attribues = """SELECT activity_id, activity_name FROM t_activity WHERE activity_id not in(SELECT activity_id as idActivityWeather FROM t_activity_weather
+                                                    INNER JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
+                                                    INNER JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
+                                                    WHERE weather_id = %(value_id_film_selected)s)"""
 
-        strsql_genres_films_attribues = """SELECT id_film, activity_id, intitule_genre FROM t_genre_film
-                                            INNER JOIN t_film ON t_film.id_film = t_genre_film.fk_film
-                                            INNER JOIN t_genre ON t_genre.activity_id = t_genre_film.fk_genre
-                                            WHERE id_film = %(value_id_film_selected)s"""
+        strsql_genres_films_attribues = """SELECT weather_id, activity_id, activity_name,score FROM t_activity_weather
+                                            INNER JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
+                                            INNER JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
+                                            WHERE weather_id = %(value_id_film_selected)s"""
 
         # Du fait de l'utilisation des "context managers" on accède au curseur grâce au "with".
         with DBconnection() as mc_afficher:

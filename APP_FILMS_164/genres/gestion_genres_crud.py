@@ -246,8 +246,8 @@ def genre_delete_wtf():
 
                 str_sql_delete_films_genre = """DELETE FROM t_activity_weather WHERE fk_activity = %(value_id_genre)s"""
                 str_sql_delete_idgenre = """DELETE FROM t_activity WHERE activity_id = %(value_id_genre)s"""
-                # Manière brutale d'effacer d'abord la "fk_genre", même si elle n'existe pas dans la "t_genre_film"
-                # Ensuite on peut effacer le genre vu qu'il n'est plus "lié" (INNODB) dans la "t_genre_film"
+                # Manière brutale d'effacer d'abord la "fk_genre", même si elle n'existe pas dans la "t_activity_weather"
+                # Ensuite on peut effacer le genre vu qu'il n'est plus "lié" (INNODB) dans la "t_activity_weather"
                 with DBconnection() as mconn_bd:
                     mconn_bd.execute(str_sql_delete_films_genre, valeur_delete_dictionnaire)
                     mconn_bd.execute(str_sql_delete_idgenre, valeur_delete_dictionnaire)
