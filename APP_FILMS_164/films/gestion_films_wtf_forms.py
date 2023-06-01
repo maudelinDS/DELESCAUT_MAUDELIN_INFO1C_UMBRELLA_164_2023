@@ -36,7 +36,6 @@ class FormWTFUpdateFilm(FlaskForm):
 
     nom_film_update_wtf = StringField("Clavioter le titre", widget=TextArea())
 
-
     submit = SubmitField("Update film")
 
 
