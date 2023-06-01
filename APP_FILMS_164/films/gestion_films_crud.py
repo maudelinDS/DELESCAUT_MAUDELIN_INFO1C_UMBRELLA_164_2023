@@ -83,7 +83,7 @@ def film_update_wtf():
     form_update_film = FormWTFUpdateFilm()
     try:
         print(" on submit ", form_update_film.validate_on_submit())
-        if form_update_film.data:
+        if form_update_film.validate_on_submit():
             # Récupèrer la valeur du champ depuis "genre_update_wtf.html" après avoir cliqué sur "SUBMIT".
             nom_film_update = form_update_film.nom_film_update_wtf.data
 
