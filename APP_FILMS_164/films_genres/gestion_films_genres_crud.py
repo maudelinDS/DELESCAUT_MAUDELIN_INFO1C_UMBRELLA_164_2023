@@ -225,7 +225,7 @@ def update_genre_film_selected():
                                                     VALUES (NULL, %(value_fk_genre)s, %(value_fk_film)s)"""
 
             # SQL pour effacer une (des) association(s) existantes entre "weather_id" et "activity_id" dans la "t_activity_weather"
-            strsql_delete_genre_film = """DELETE FROM t_activity_we ather WHERE fk_activity = %(value_fk_genre)s AND fk_weather = %(value_fk_film)s"""
+            strsql_delete_genre_film = """DELETE FROM t_activity_weather WHERE fk_activity = %(value_fk_genre)s AND fk_weather = %(value_fk_film)s"""
 
             with DBconnection() as mconn_bd:
                 # Pour le film sélectionné, parcourir la liste des genres à INSÉRER dans la "t_activity_weather".

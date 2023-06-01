@@ -112,7 +112,7 @@ def film_update_wtf():
                 mybd_conn.execute(str_sql_id_film, valeur_select_dictionnaire)
             # Une seule valeur est suffisante "fetchone()", vu qu'il n'y a qu'un seul champ "nom genre" pour l'UPDATE
             data_film = mybd_conn.fetchone()
-            print("data_film ", data_film, " type ", type(data_film), " genre ",
+            print("data_film ", data_film, " type ", type(data_film), " weather ",
                   data_film["weather_name"])
 
             # Afficher la valeur sélectionnée dans le champ du formulaire "film_update_wtf.html"
