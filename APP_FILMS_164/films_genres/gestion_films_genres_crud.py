@@ -32,11 +32,11 @@ def films_genres_afficher(id_film_sel):
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
-                strsql_genres_films_afficher_data = """SELECT weather_id, weather_name,
-                                                            GROUP_CONCAT(activity_name) as ActivityWeather FROM t_activity_weather
-                                                            RIGHT JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
-                                                            LEFT JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
-                                                            GROUP BY weather_id"""
+                strsql_genres_films_afficher_data = """SELECT weather_id, score, weather_name, GROUP_CONCAT(activity_name) as ActivityWeather
+FROM t_activity_weather
+RIGHT JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
+LEFT JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
+GROUP BY weather_id, score"""
                 if id_film_sel == 0:
                     # le paramètre 0 permet d'afficher tous les films
                     # Sinon le paramètre représente la valeur de l'id du film
@@ -221,7 +221,7 @@ def update_genre_film_selected():
 
             # SQL pour insérer une nouvelle association entre
             # "fk_film"/"weather_id" et "fk_genre"/"activity_id" dans la "t_activity_weather"
-            strsql_insert_genre_film = """INSERT INTO t_activity_weather (activity_weather_id, fk_activity, fk_weather)
+            strsql_insert_genre_film = """INSERT INTO t_activity_weather (activity_weather_id, fk_activity, fk_weather, score)
                                                     VALUES (NULL, %(value_fk_genre)s, %(value_fk_film)s)"""
 
             # SQL pour effacer une (des) association(s) existantes entre "weather_id" et "activity_id" dans la "t_activity_weather"
@@ -275,7 +275,7 @@ def update_genre_film_selected():
 def genres_films_afficher_data(valeur_id_film_selected_dict):
     print("valeur_id_film_selected_dict...", valeur_id_film_selected_dict)
     try:
-        strsql_film_selected = """SELECT weather_id, weather_name,  GROUP_CONCAT(activity_id) as ActivityWeather FROM t_activity_weather
+        strsql_film_selected = """SELECT weather_id, score, weather_name,  GROUP_CONCAT(activity_id) as ActivityWeather FROM t_activity_weather
                                         INNER JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
                                         INNER JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
                                         WHERE weather_id = %(value_id_film_selected)s"""
