@@ -48,7 +48,7 @@
 							<a class="btn btn-warning" href="{{ url_for('edit_genre_film_selected', id_film_genres_edit_html=row.environ_id) }}" role="button">Modifier</a>
 						</td>
 						<td class="align-middle" colspan="5">
-							{{ row.ActivityEnviron|default("PAS D'activités", True) }}
+							{{ row.ActivityEnviron|default("PAS D'environnement", True) }}
 						</td>
 					</tr>
 				</tr>
@@ -57,7 +57,7 @@
 				<tbody>
 					<tr>
 						<td>
-							Aucun Activité.
+							Aucun Environement.
 						</td>
 						<td>
 							<a class="btn btn-primary" href="{{ url_for('avertissement_sympa_pour_geeks') }}" role="button">Add</a>
