@@ -188,7 +188,7 @@ def environ_update_wtf():
                   data_nom_genre["environ_name"])
 
             # Afficher la valeur sélectionnée dans les champs du formulaire "environ_update_wtf.html"
-            form_update.nom_genre_update_wtf.data = data_nom_genre["environ_id"]
+            form_update.nom_genre_update_wtf.data = data_nom_genre["environ_name"]
 
     except Exception as Exception_genre_update_wtf:
         raise ExceptionGenreUpdateWtf(f"fichier : {Path(__file__).name}  ;  "
@@ -245,7 +245,7 @@ def environ_delete_wtf():
                 print("valeur_delete_dictionnaire ", valeur_delete_dictionnaire)
 
                 str_sql_delete_films_genre = """DELETE FROM t_activity_environ WHERE fk_activity = %(value_id_genre)s"""
-                str_sql_delete_idgenre = """DELETE FROM t_activity WHERE activity_id = %(value_id_genre)s"""
+                str_sql_delete_idgenre = """DELETE FROM t_environ WHERE environ_id = %(value_id_genre)s"""
                 # Manière brutale d'effacer d'abord la "fk_genre", même si elle n'existe pas dans la "t_activity_weather"
                 # Ensuite on peut effacer le genre vu qu'il n'est plus "lié" (INNODB) dans la "t_activity_weather"
                 with DBconnection() as mconn_bd:
@@ -284,7 +284,7 @@ def environ_delete_wtf():
                 # Une seule valeur est suffisante "fetchone()",
                 # vu qu'il n'y a qu'un seul champ "nom genre" pour l'action DELETE
                 data_nom_genre = mydb_conn.fetchone()
-                print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " environ   ",
+                print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " environ ",
                       data_nom_genre["environ_name"])
 
             # Afficher la valeur sélectionnée dans le champ du formulaire "environ_delete_wtf.html"

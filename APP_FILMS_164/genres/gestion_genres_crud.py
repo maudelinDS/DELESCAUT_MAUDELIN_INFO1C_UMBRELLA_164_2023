@@ -34,7 +34,7 @@ def genres_afficher(order_by, id_genre_sel):
         try:
             with DBconnection() as mc_afficher:
                 if order_by == "ASC" and id_genre_sel == 0:
-                    strsql_genres_afficher = """SELECT activity_id,activity_name FROM t_activity ORDER BY activity_id ASC"""
+                    strsql_genres_afficher = """SELECT activity_id,activity_name FROM t_activity ORDER BY activity_id DESC"""
                     mc_afficher.execute(strsql_genres_afficher)
                 elif order_by == "ASC":
                     # C'EST LA QUE VOUS ALLEZ DEVOIR PLACER VOTRE PROPRE LOGIQUE MySql

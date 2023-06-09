@@ -32,11 +32,12 @@ def films_genres_afficher(id_film_sel):
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
-                strsql_genres_films_afficher_data = """SELECT weather_id, score, weather_name, GROUP_CONCAT(activity_name) as ActivityWeather
+                strsql_genres_films_afficher_data = """SELECT t_weather.weather_id, t_weather.weather_name, GROUP_CONCAT(t_activity.activity_name) AS ActivityWeather
 FROM t_activity_weather
 RIGHT JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
 LEFT JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
-GROUP BY weather_id, score"""
+GROUP BY t_weather.weather_id, t_weather.weather_name
+"""
                 if id_film_sel == 0:
                     # le paramètre 0 permet d'afficher tous les films
                     # Sinon le paramètre représente la valeur de l'id du film
@@ -126,7 +127,8 @@ def edit_genre_film_selected():
                   type(lst_data_film_selected))
 
             # Dans le composant "tags-selector-tagselect" on doit connaître
-            # les genres qui ne sont pas encore sélectionnés.
+            # les genres qui ne sont pas encore sélectionnés.Erreur : fichier : gestion_films_genres_crud.py ; edit_genre_film_selected ; fichier : gestion_films_genres_crud.py ; genres_films_afficher_data ; <class 'pymysql.err.OperationalError'> exception dans DBconnection methode exit : (1140, "In aggregated query without GROUP BY, expression #2 of SELECT list contains nonaggregated column 'DELESCAUT_MAUDELIN_INFO1C_UMBRELLA_164_2023.t_activity_weather.score'; this is incompatible with sql_mode=only_full_group_by") fichier : gestion_films_genres_crud.py ; edit_genre_film_selected ; fichier : gestion_films_genres_crud.py ; genres_films_afficher_data ; <class 'pymysql.err.OperationalError'> exception dans DBconnection methode exit : (1140, "In aggregated query without GROUP BY, expression #2 of SELECT list contains nonaggregated column 'DELESCAUT_MAUDELIN_INFO1C_UMBRELLA_164_2023.t_activity_weather.score'; this is incompatible with sql_mode=only_full_group_by") <class 'APP_FILMS_164.erreurs.exceptions.ExceptionEditGenreFilmSelected'> ￼×
+
             lst_data_genres_films_non_attribues = [item['activity_id'] for item in data_genres_films_non_attribues]
             session['session_lst_data_genres_films_non_attribues'] = lst_data_genres_films_non_attribues
             print("lst_data_genres_films_non_attribues  ", lst_data_genres_films_non_attribues,
@@ -275,10 +277,12 @@ def update_genre_film_selected():
 def genres_films_afficher_data(valeur_id_film_selected_dict):
     print("valeur_id_film_selected_dict...", valeur_id_film_selected_dict)
     try:
-        strsql_film_selected = """SELECT weather_id, score, weather_name,  GROUP_CONCAT(activity_id) as ActivityWeather FROM t_activity_weather
-                                        INNER JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
-                                        INNER JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
-                                        WHERE weather_id = %(value_id_film_selected)s"""
+        strsql_film_selected = """SELECT weather_id, score, weather_name,  GROUP_CONCAT(activity_id) as ActivityWeather
+                          FROM t_activity_weather
+                          INNER JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
+                          INNER JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
+                          WHERE weather_id = %(value_id_film_selected)s
+                          GROUP BY weather_id, score, weather_name"""
 
         strsql_genres_films_non_attribues = """SELECT activity_id, activity_name FROM t_activity WHERE activity_id not in(SELECT activity_id as idActivityWeather FROM t_activity_weather
                                                     INNER JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
