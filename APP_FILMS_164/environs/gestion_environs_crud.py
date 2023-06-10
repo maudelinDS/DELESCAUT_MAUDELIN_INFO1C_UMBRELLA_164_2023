@@ -95,8 +95,8 @@ def environs_afficher(order_by, id_genre_sel):
 """
 
 
-@app.route("/environs_ajouter", methods=['GET', 'POST'])
-def environs_ajouter_wtf():
+@app.route("/environs_add", methods=['GET', 'POST'])
+def environs_add_wtf():
     form = FormWTFAjouterGenres()
     if request.method == "POST":
         try:
@@ -118,7 +118,7 @@ def environs_ajouter_wtf():
 
         except Exception as Exception_environs_ajouter_wtf:
             raise ExceptionGenresAjouterWtf(f"fichier : {Path(__file__).name}  ;  "
-                                            f"{environs_ajouter_wtf.__name__} ; "
+                                            f"{environs_add_wtf.__name__} ; "
                                             f"{Exception_environs_ajouter_wtf}")
 
     return render_template("environs/environs_ajouter_wtf.html", form=form)

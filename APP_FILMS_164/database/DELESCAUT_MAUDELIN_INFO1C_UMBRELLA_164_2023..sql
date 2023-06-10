@@ -64,7 +64,7 @@ CREATE TABLE `t_activity_environ` (
 
 LOCK TABLES `t_activity_environ` WRITE;
 /*!40000 ALTER TABLE `t_activity_environ` DISABLE KEYS */;
-INSERT INTO `t_activity_environ` VALUES (1,1,1),(2,2,1),(3,2,2),(4,1,3),(5,1,4),(6,2,5),(7,2,6),(8,2,7),(9,1,8),(10,2,8),(11,1,9),(12,2,10),(13,1,11),(14,1,12),(15,2,13),(16,1,14),(17,1,15),(18,1,16),(19,2,17),(20,1,18),(21,2,19),(22,2,20),(23,2,21),(24,2,23),(25,2,24),(26,2,25),(27,2,26),(28,2,27),(29,2,28),(30,2,29),(31,2,30),(32,2,31),(33,1,32),(34,1,33),(35,2,34),(36,2,35),(37,2,36),(38,2,37),(39,2,38),(40,1,39),(41,2,41),(42,2,42);
+INSERT INTO `t_activity_environ` VALUES (1,1,1),(2,2,1),(3,2,2),(12,2,10),(13,1,11),(14,1,12),(15,2,13),(16,1,14),(17,1,15),(18,1,16),(19,2,17),(20,1,18),(21,2,19),(22,2,20),(23,2,21),(24,2,23),(25,2,24),(26,2,25),(27,2,26),(28,2,27),(29,2,28),(30,2,29),(31,2,30),(32,2,31),(33,1,32),(34,1,33),(35,2,34),(36,2,35),(37,2,36),(38,2,37),(39,2,38),(40,1,39),(41,2,41),(42,2,42);
 /*!40000 ALTER TABLE `t_activity_environ` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -110,7 +110,7 @@ CREATE TABLE `t_environ` (
   `environ_name` varchar(30) NOT NULL,
   PRIMARY KEY (`environ_id`),
   UNIQUE KEY `environ_name` (`environ_name`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -119,7 +119,7 @@ CREATE TABLE `t_environ` (
 
 LOCK TABLES `t_environ` WRITE;
 /*!40000 ALTER TABLE `t_environ` DISABLE KEYS */;
-INSERT INTO `t_environ` VALUES (1,'inside'),(2,'outside');
+INSERT INTO `t_environ` VALUES (12,'bb'),(1,'inside'),(14,'ll'),(2,'outside'),(10,'test');
 /*!40000 ALTER TABLE `t_environ` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,7 +134,7 @@ CREATE TABLE `t_weather` (
   `weather_id` int NOT NULL AUTO_INCREMENT,
   `weather_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`weather_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=127 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=136 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -143,7 +143,7 @@ CREATE TABLE `t_weather` (
 
 LOCK TABLES `t_weather` WRITE;
 /*!40000 ALTER TABLE `t_weather` DISABLE KEYS */;
-INSERT INTO `t_weather` VALUES (0,'Orageux'),(1,'Enneigé'),(2,'Nuageux'),(3,'Pluvieux'),(4,'Ensoleillée');
+INSERT INTO `t_weather` VALUES (0,'Orageux'),(1,'Enneigé'),(2,'Nuageux'),(3,'Pluvieux'),(4,'Ensoleilléee');
 /*!40000 ALTER TABLE `t_weather` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -156,4 +156,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-06-09 12:20:16
+-- Dump completed on 2023-06-10 11:06:47
