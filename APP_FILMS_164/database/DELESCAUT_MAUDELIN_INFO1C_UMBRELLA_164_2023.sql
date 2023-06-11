@@ -48,112 +48,6 @@ INSERT INTO `t_activity` VALUES (1,'Badminton'),(2,'Basketball'),(3,'Bowling'),(
 /*!40000 ALTER TABLE `t_activity` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `t_activity_environ`
---
-
-DROP TABLE IF EXISTS `t_activity_environ`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `t_activity_environ` (
-  `activity_environ_id` int NOT NULL AUTO_INCREMENT,
-  `fk_environ` int NOT NULL,
-  `fk_activity` int NOT NULL,
-  PRIMARY KEY (`activity_environ_id`),
-  KEY `fk_environ` (`fk_environ`),
-  KEY `fk_activity` (`fk_activity`),
-  CONSTRAINT `t_activity_environ_ibfk_1` FOREIGN KEY (`fk_environ`) REFERENCES `t_environ` (`environ_id`),
-  CONSTRAINT `t_activity_environ_ibfk_2` FOREIGN KEY (`fk_activity`) REFERENCES `t_activity` (`activity_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `t_activity_environ`
---
-
-LOCK TABLES `t_activity_environ` WRITE;
-/*!40000 ALTER TABLE `t_activity_environ` DISABLE KEYS */;
-INSERT INTO `t_activity_environ` VALUES (1,1,1),(2,2,1),(3,2,2),(4,1,3),(5,1,4),(6,2,5),(7,2,6),(8,2,7),(9,1,8),(10,2,8),(11,1,9),(12,2,10),(13,1,11),(14,1,12),(15,2,13),(16,1,14),(17,1,15),(18,1,16),(19,2,17),(20,1,18),(21,2,19),(22,2,20),(23,2,21),(24,2,23),(25,2,24),(26,2,25),(27,2,26),(28,2,27),(29,2,28),(30,2,29),(31,2,30),(32,2,31),(33,1,32),(34,1,33),(35,2,34),(36,2,35),(37,2,36),(38,2,37),(39,2,38),(40,1,39),(41,2,41),(42,2,42);
-/*!40000 ALTER TABLE `t_activity_environ` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `t_activity_season`
---
-
-DROP TABLE IF EXISTS `t_activity_season`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `t_activity_season` (
-  `activity_season_id` int NOT NULL AUTO_INCREMENT,
-  `fk_season` int NOT NULL,
-  `fk_activity` int NOT NULL,
-  PRIMARY KEY (`activity_season_id`),
-  KEY `fk_season` (`fk_season`),
-  KEY `fk_activity` (`fk_activity`),
-  CONSTRAINT `t_activity_season_ibfk_1` FOREIGN KEY (`fk_season`) REFERENCES `t_season` (`season_id`),
-  CONSTRAINT `t_activity_season_ibfk_2` FOREIGN KEY (`fk_activity`) REFERENCES `t_activity` (`activity_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `t_activity_season`
---
-
-LOCK TABLES `t_activity_season` WRITE;
-/*!40000 ALTER TABLE `t_activity_season` DISABLE KEYS */;
-INSERT INTO `t_activity_season` VALUES (1,1,1),(2,2,1),(3,3,1),(4,4,1),(5,1,2),(6,3,2),(7,1,3),(8,2,3),(9,3,3),(10,4,3),(11,1,4),(12,2,4),(13,3,4),(14,4,4),(15,1,5),(16,2,5),(17,3,5),(18,4,5),(19,1,6),(20,2,6),(21,3,6),(22,1,7),(23,2,7),(24,3,7),(25,1,8),(26,2,8),(27,3,8),(28,1,9),(29,2,9),(30,3,9),(31,4,9),(32,1,10),(33,2,10),(34,3,10),(35,4,11),(36,1,12),(37,2,12),(38,3,12),(39,4,12),(40,1,13),(41,2,13),(42,3,13),(43,1,14),(44,2,14),(45,3,14),(46,4,14),(47,1,15),(48,2,15),(49,3,15),(50,4,15),(51,1,16),(52,2,16),(53,3,16),(54,1,17),(55,2,17),(56,3,17),(57,4,18),(58,4,19),(59,1,20),(60,2,20),(61,2,21),(62,3,21),(63,1,23),(64,2,23),(65,3,23),(66,1,24),(67,2,24),(68,1,25),(69,2,25),(70,3,25),(71,4,25),(72,2,26),(73,3,26),(74,1,27),(75,2,27),(76,3,27),(77,4,28),(78,4,29),(79,2,30),(80,3,30),(81,4,31),(82,1,32),(83,2,32),(84,3,32),(85,4,32),(86,1,33),(87,2,33),(88,3,33),(89,4,33),(90,2,34),(91,1,35),(92,2,35),(93,3,35),(94,1,36),(95,2,36),(96,3,36),(97,1,37),(98,2,37),(99,3,37),(100,1,38),(101,2,38),(102,3,38),(103,1,39),(104,2,39),(105,3,39),(106,4,39),(107,1,41),(108,2,41),(109,3,41),(110,1,42),(111,2,42),(112,3,42);
-/*!40000 ALTER TABLE `t_activity_season` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `t_activity_temperature`
---
-
-DROP TABLE IF EXISTS `t_activity_temperature`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `t_activity_temperature` (
-  `activity_temperature_id` int NOT NULL AUTO_INCREMENT,
-  `fk_temp` int NOT NULL,
-  `fk_activity` int NOT NULL,
-  PRIMARY KEY (`activity_temperature_id`),
-  KEY `fk_temp` (`fk_temp`),
-  KEY `fk_activity` (`fk_activity`),
-  CONSTRAINT `t_activity_temperature_ibfk_1` FOREIGN KEY (`fk_temp`) REFERENCES `t_temperature` (`temp_id`),
-  CONSTRAINT `t_activity_temperature_ibfk_2` FOREIGN KEY (`fk_activity`) REFERENCES `t_activity` (`activity_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `t_activity_temperature`
---
-
-LOCK TABLES `t_activity_temperature` WRITE;
-/*!40000 ALTER TABLE `t_activity_temperature` DISABLE KEYS */;
-INSERT INTO `t_activity_temperature` VALUES (1,3,1),(2,3,2),(3,3,3),(4,3,4),(5,2,4),(6,3,5),(7,3,6),(8,3,7),(9,3,8),(10,3,9),(11,2,9),(12,3,10),(13,2,11),(14,3,12),(15,2,12),(16,3,13),(17,3,14),(18,2,14),(19,3,15),(20,2,15),(21,3,16),(22,2,16),(23,3,17),(24,2,18),(25,2,19),(26,1,20),(27,3,20),(28,1,21),(29,3,21),(30,1,23),(31,3,23),(32,1,24),(33,3,24),(34,1,25),(35,3,25),(36,2,25),(37,1,27),(38,3,27),(39,2,28),(40,3,28),(41,2,29),(42,3,29),(43,1,30),(44,3,30),(45,2,31),(46,3,31),(47,2,32),(48,3,32),(49,2,33),(50,3,33),(51,1,34),(52,1,35),(53,3,35),(54,1,36),(55,3,36),(56,1,37),(57,3,37),(58,1,38),(59,2,39),(60,3,39),(61,1,41),(62,3,41),(63,1,42),(64,3,42);
-/*!40000 ALTER TABLE `t_activity_temperature` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `t_activity_weather`
---
-
-DROP TABLE IF EXISTS `t_activity_weather`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `t_activity_weather` (
-  `activity_weather_id` int NOT NULL AUTO_INCREMENT,
-  `fk_weather` int NOT NULL,
-  `fk_activity` int NOT NULL,
-  `score` int NOT NULL,
-  PRIMARY KEY (`activity_weather_id`),
-  KEY `fk_weather` (`fk_weather`),
-  KEY `fk_activity` (`fk_activity`),
-  CONSTRAINT `t_activity_weather_ibfk_1` FOREIGN KEY (`fk_weather`) REFERENCES `t_weather` (`weather_id`),
-  CONSTRAINT `t_activity_weather_ibfk_2` FOREIGN KEY (`fk_activity`) REFERENCES `t_activity` (`activity_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `t_activity_weather`
@@ -265,6 +159,114 @@ INSERT INTO `t_weather` VALUES (2,'Enneigé'),(5,'Ensoleillée'),(3,'Nuageux'),(
 /*!40000 ALTER TABLE `t_weather` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+
+--
+-- Table structure for table `t_activity_environ`
+--
+
+DROP TABLE IF EXISTS `t_activity_environ`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_activity_environ` (
+  `activity_environ_id` int NOT NULL AUTO_INCREMENT,
+  `fk_environ` int NOT NULL,
+  `fk_activity` int NOT NULL,
+  PRIMARY KEY (`activity_environ_id`),
+  KEY `fk_environ` (`fk_environ`),
+  KEY `fk_activity` (`fk_activity`),
+  CONSTRAINT `t_activity_environ_ibfk_1` FOREIGN KEY (`fk_environ`) REFERENCES `t_environ` (`environ_id`),
+  CONSTRAINT `t_activity_environ_ibfk_2` FOREIGN KEY (`fk_activity`) REFERENCES `t_activity` (`activity_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_activity_environ`
+--
+
+LOCK TABLES `t_activity_environ` WRITE;
+/*!40000 ALTER TABLE `t_activity_environ` DISABLE KEYS */;
+INSERT INTO `t_activity_environ` VALUES (1,1,1),(2,2,1),(3,2,2),(4,1,3),(5,1,4),(6,2,5),(7,2,6),(8,2,7),(9,1,8),(10,2,8),(11,1,9),(12,2,10),(13,1,11),(14,1,12),(15,2,13),(16,1,14),(17,1,15),(18,1,16),(19,2,17),(20,1,18),(21,2,19),(22,2,20),(23,2,21),(24,2,23),(25,2,24),(26,2,25),(27,2,26),(28,2,27),(29,2,28),(30,2,29),(31,2,30),(32,2,31),(33,1,32),(34,1,33),(35,2,34),(36,2,35),(37,2,36),(38,2,37),(39,2,38),(40,1,39),(41,2,41),(42,2,42);
+/*!40000 ALTER TABLE `t_activity_environ` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `t_activity_season`
+--
+
+DROP TABLE IF EXISTS `t_activity_season`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_activity_season` (
+  `activity_season_id` int NOT NULL AUTO_INCREMENT,
+  `fk_season` int NOT NULL,
+  `fk_activity` int NOT NULL,
+  PRIMARY KEY (`activity_season_id`),
+  KEY `fk_season` (`fk_season`),
+  KEY `fk_activity` (`fk_activity`),
+  CONSTRAINT `t_activity_season_ibfk_1` FOREIGN KEY (`fk_season`) REFERENCES `t_season` (`season_id`),
+  CONSTRAINT `t_activity_season_ibfk_2` FOREIGN KEY (`fk_activity`) REFERENCES `t_activity` (`activity_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=113 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_activity_season`
+--
+
+LOCK TABLES `t_activity_season` WRITE;
+/*!40000 ALTER TABLE `t_activity_season` DISABLE KEYS */;
+INSERT INTO `t_activity_season` VALUES (1,1,1),(2,2,1),(3,3,1),(4,4,1),(5,1,2),(6,3,2),(7,1,3),(8,2,3),(9,3,3),(10,4,3),(11,1,4),(12,2,4),(13,3,4),(14,4,4),(15,1,5),(16,2,5),(17,3,5),(18,4,5),(19,1,6),(20,2,6),(21,3,6),(22,1,7),(23,2,7),(24,3,7),(25,1,8),(26,2,8),(27,3,8),(28,1,9),(29,2,9),(30,3,9),(31,4,9),(32,1,10),(33,2,10),(34,3,10),(35,4,11),(36,1,12),(37,2,12),(38,3,12),(39,4,12),(40,1,13),(41,2,13),(42,3,13),(43,1,14),(44,2,14),(45,3,14),(46,4,14),(47,1,15),(48,2,15),(49,3,15),(50,4,15),(51,1,16),(52,2,16),(53,3,16),(54,1,17),(55,2,17),(56,3,17),(57,4,18),(58,4,19),(59,1,20),(60,2,20),(61,2,21),(62,3,21),(63,1,23),(64,2,23),(65,3,23),(66,1,24),(67,2,24),(68,1,25),(69,2,25),(70,3,25),(71,4,25),(72,2,26),(73,3,26),(74,1,27),(75,2,27),(76,3,27),(77,4,28),(78,4,29),(79,2,30),(80,3,30),(81,4,31),(82,1,32),(83,2,32),(84,3,32),(85,4,32),(86,1,33),(87,2,33),(88,3,33),(89,4,33),(90,2,34),(91,1,35),(92,2,35),(93,3,35),(94,1,36),(95,2,36),(96,3,36),(97,1,37),(98,2,37),(99,3,37),(100,1,38),(101,2,38),(102,3,38),(103,1,39),(104,2,39),(105,3,39),(106,4,39),(107,1,41),(108,2,41),(109,3,41),(110,1,42),(111,2,42),(112,3,42);
+/*!40000 ALTER TABLE `t_activity_season` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `t_activity_temperature`
+--
+
+DROP TABLE IF EXISTS `t_activity_temperature`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_activity_temperature` (
+  `activity_temperature_id` int NOT NULL AUTO_INCREMENT,
+  `fk_temp` int NOT NULL,
+  `fk_activity` int NOT NULL,
+  PRIMARY KEY (`activity_temperature_id`),
+  KEY `fk_temp` (`fk_temp`),
+  KEY `fk_activity` (`fk_activity`),
+  CONSTRAINT `t_activity_temperature_ibfk_1` FOREIGN KEY (`fk_temp`) REFERENCES `t_temperature` (`temp_id`),
+  CONSTRAINT `t_activity_temperature_ibfk_2` FOREIGN KEY (`fk_activity`) REFERENCES `t_activity` (`activity_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=65 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `t_activity_temperature`
+--
+
+LOCK TABLES `t_activity_temperature` WRITE;
+/*!40000 ALTER TABLE `t_activity_temperature` DISABLE KEYS */;
+INSERT INTO `t_activity_temperature` VALUES (1,3,1),(2,3,2),(3,3,3),(4,3,4),(5,2,4),(6,3,5),(7,3,6),(8,3,7),(9,3,8),(10,3,9),(11,2,9),(12,3,10),(13,2,11),(14,3,12),(15,2,12),(16,3,13),(17,3,14),(18,2,14),(19,3,15),(20,2,15),(21,3,16),(22,2,16),(23,3,17),(24,2,18),(25,2,19),(26,1,20),(27,3,20),(28,1,21),(29,3,21),(30,1,23),(31,3,23),(32,1,24),(33,3,24),(34,1,25),(35,3,25),(36,2,25),(37,1,27),(38,3,27),(39,2,28),(40,3,28),(41,2,29),(42,3,29),(43,1,30),(44,3,30),(45,2,31),(46,3,31),(47,2,32),(48,3,32),(49,2,33),(50,3,33),(51,1,34),(52,1,35),(53,3,35),(54,1,36),(55,3,36),(56,1,37),(57,3,37),(58,1,38),(59,2,39),(60,3,39),(61,1,41),(62,3,41),(63,1,42),(64,3,42);
+/*!40000 ALTER TABLE `t_activity_temperature` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `t_activity_weather`
+--
+
+DROP TABLE IF EXISTS `t_activity_weather`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `t_activity_weather` (
+  `activity_weather_id` int NOT NULL AUTO_INCREMENT,
+  `fk_weather` int NOT NULL,
+  `fk_activity` int NOT NULL,
+  `score` int NOT NULL,
+  PRIMARY KEY (`activity_weather_id`),
+  KEY `fk_weather` (`fk_weather`),
+  KEY `fk_activity` (`fk_activity`),
+  CONSTRAINT `t_activity_weather_ibfk_1` FOREIGN KEY (`fk_weather`) REFERENCES `t_weather` (`weather_id`),
+  CONSTRAINT `t_activity_weather_ibfk_2` FOREIGN KEY (`fk_activity`) REFERENCES `t_activity` (`activity_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=200 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
