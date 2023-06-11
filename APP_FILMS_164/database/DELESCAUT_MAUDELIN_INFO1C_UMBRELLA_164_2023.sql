@@ -130,7 +130,7 @@ CREATE TABLE `t_temperature` (
 
 LOCK TABLES `t_temperature` WRITE;
 /*!40000 ALTER TABLE `t_temperature` DISABLE KEYS */;
-INSERT INTO `t_temperature` VALUES (2,'Cold'),(1,'Hot'),(3,'Medium');
+INSERT INTO `t_temperature` VALUES (2,'Cold'),(1,'Hot'),(3,'Medium'),(4,'mi'),(5,'demi'),(6,'frisquet');
 /*!40000 ALTER TABLE `t_temperature` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -155,7 +155,7 @@ CREATE TABLE `t_weather` (
 
 LOCK TABLES `t_weather` WRITE;
 /*!40000 ALTER TABLE `t_weather` DISABLE KEYS */;
-INSERT INTO `t_weather` VALUES (2,'Enneigé'),(5,'Ensoleillée'),(3,'Nuageux'),(1,'Orageux'),(4,'Pluvieux');
+INSERT INTO `t_weather` VALUES (2,'Enneigé'),(5,'Ensoleillée'),(3,'Nuageux'),(1,'Orageux'),(4,'Pluvieux'),(5,'tetetet'),(6,'sssss');
 /*!40000 ALTER TABLE `t_weather` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
