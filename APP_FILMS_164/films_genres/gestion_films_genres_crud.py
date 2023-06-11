@@ -36,7 +36,7 @@ def films_genres_afficher(id_film_sel):
 FROM t_activity_weather
 RIGHT JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
 LEFT JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
-GROUP BY t_weather.weather_id, t_weather.name_weather
+GROUP BY t_weather.weather_id,t_weather.name_weather
 """
                 if id_film_sel == 0:
                     # le paramètre 0 permet d'afficher tous les films
