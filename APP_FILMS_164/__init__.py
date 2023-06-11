@@ -45,20 +45,23 @@ try:
     from APP_FILMS_164.demos_om_164 import routes_demos
 
     from APP_FILMS_164.films_genres import gestion_films_genres_crud
-    from APP_FILMS_164.activity_environs import gestion_activity_environs_crud
     from APP_FILMS_164.erreurs import msg_avertissements
 
     from APP_FILMS_164.films import gestion_films_crud
     from APP_FILMS_164.films import gestion_films_wtf_forms
-
-    from APP_FILMS_164.environs import gestion_environs_crud
-    from APP_FILMS_164.environs import gestion_environs_wtf_forms
 
     from APP_FILMS_164.seasons import gestion_seasons_crud
     from APP_FILMS_164.seasons import gestion_seasons_wtf_forms
 
     from APP_FILMS_164.temperatures import gestion_temps_crud
     from APP_FILMS_164.temperatures import gestion_temps_wtf_forms
+
+    from APP_FILMS_164.weathers import gestion_weathers_crud
+    from APP_FILMS_164.weathers import gestion_weathers_wtf_forms
+
+    from APP_FILMS_164.environs import gestion_environs_crud
+    from APP_FILMS_164.environs import gestion_environs_wtf_forms
+    from APP_FILMS_164.activity_environs import gestion_activity_environs_crud
 
 except Exception as Exception_init_app_films_164:
     print(f"4567756434 Une erreur est survenue {type(Exception_init_app_films_164)} dans"

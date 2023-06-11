@@ -5,7 +5,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<p>
-				Environnement
+				Météo
 			</p>
             <table class="table table-bordered table-sm">
             {% if data %}
@@ -15,7 +15,7 @@
                             Id
                         </th>
                         <th class="align-middle">
-                            Environnement
+                            Météo
                         </th>
 
                         <th class="align-middle">
@@ -35,20 +35,20 @@
 				<tbody>
 					<tr>
 						<td class="align-middle">
-							{{ row.environ_id }}
+							{{ row.weather_id }}
 						</td>
 						<td class="align-middle">
-							{{ row.environ_name }}
+							{{ row.name_weather }}
 						</td>
 
 						<td class="text-center" class="align-middle">
-							<a class="btn btn-primary" href="{{ url_for('environs_ajouter_wtf') }}" role="button">Ajouter</a>
+							<a class="btn btn-primary" href="{{ url_for('weathers_ajouter_wtf') }}" role="button">Ajouter</a>
 						</td>
 						<td class="text-center" class="align-middle">
-							<a class="btn btn-warning" href="{{ url_for('environ_update_wtf', id_genre_btn_edit_html=row.environ_id) }}" role="button">Edit</a>
+							<a class="btn btn-warning" href="{{ url_for('weather_update_wtf', id_genre_btn_edit_html=row.weather_id) }}" role="button">Edit</a>
 						</td>
 						<td class="text-center" class="align-middle">
-							<a class="btn btn-danger" href="{{ url_for('environ_delete_wtf', id_genre_btn_delete_html=row.environ_id) }}" role="button">Delete</a>
+							<a class="btn btn-danger" href="{{ url_for('weather_delete_wtf', id_genre_btn_delete_html=row.weather_id) }}" role="button">Delete</a>
 						</td>
 					</tr>
 				</tbody>
@@ -56,10 +56,10 @@
 				<tbody>
 					<tr>
 						<td>
-							Aucun environnemnt.
+							Aucune Météo.
 						</td>
 						<td>
-							<a class="btn btn-primary" href="{{ url_for('environs_ajouter_wtf') }}" role="button">Ajouter</a>
+							<a class="btn btn-primary" href="{{ url_for('weathers_ajouter_wtf') }}" role="button">Ajouter</a>
 						</td>
 					</tr>
 				</tbody>

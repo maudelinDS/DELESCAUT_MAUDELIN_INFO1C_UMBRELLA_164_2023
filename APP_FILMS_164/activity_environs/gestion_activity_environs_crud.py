@@ -65,13 +65,12 @@ GROUP BY t_environ.environ_id, t_environ.environ_name
                     flash(f"Données films et genres affichés !!", "success")
 
         except Exception as Exception_films_genres_afficher:
-            raise ExceptionFilmsGenresAfficher(
-                f"fichier : {Path(__file__).name}  ;  {activity_environs_afficher.__name__} ;"
-                f"{Exception_films_genres_afficher}")
+            raise ExceptionFilmsGenresAfficher(f"fichier : {Path(__file__).name}  ;  {activity_environs_afficher.__name__} ;"
+                                               f"{Exception_films_genres_afficher}")
 
     print("films_genres_afficher  ", data_genres_films_afficher)
     # Envoie la page "HTML" au serveur.
-    return render_template("activity_environ/activity_environs_afficher.html", data=data_genres_films_afficher)
+    return render_template("activity_environs/activity_environs_afficher.html", data=data_genres_films_afficher)
 
 
 """
@@ -91,7 +90,7 @@ GROUP BY t_environ.environ_id, t_environ.environ_name
 
 
 @app.route("/edit_activity_environ_selected", methods=['GET', 'POST'])
-def     edit_activity_environ_selected():
+def edit_activity_environ_selected():
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
@@ -120,10 +119,10 @@ def     edit_activity_environ_selected():
             # 3) Sélection des genres "pas encore" attribués pour le film choisi.
             # ATTENTION à l'ordre d'assignation des variables retournées par la fonction "genres_films_afficher_data"
             data_genre_film_selected, data_genres_films_non_attribues, data_genres_films_attribues = \
-                activity_environs_afficher_data(valeur_id_film_selected_dictionnaire)
+                genres_films_afficher_data(valeur_id_film_selected_dictionnaire)
 
             print(data_genre_film_selected)
-            lst_data_film_selected = [item['environ_id'] for item in data_genre_film_selected]
+            lst_data_film_selected = [item['weather_id'] for item in data_genre_film_selected]
             print("lst_data_film_selected  ", lst_data_film_selected,
                   type(lst_data_film_selected))
 
@@ -159,7 +158,7 @@ def     edit_activity_environ_selected():
                                                  f"{edit_activity_environ_selected.__name__} ; "
                                                  f"{Exception_edit_genre_film_selected}")
 
-    return render_template("activity_environ/activity_environs_modifier_tags_dropbox.html",
+    return render_template("films_genres/films_genres_modifier_tags_dropbox.html",
                            data_genres=data_genres_all,
                            data_film_selected=data_genre_film_selected,
                            data_genres_attribues=data_genres_films_attribues,
@@ -224,11 +223,11 @@ def update_activity_environ_selected():
 
             # SQL pour insérer une nouvelle association entre
             # "fk_film"/"weather_id" et "fk_genre"/"activity_id" dans la "t_activity_weather"
-            strsql_insert_genre_film = """INSERT INTO t_activity_environ (activity_environ_id, fk_activity, fk_environ)
+            strsql_insert_genre_film = """INSERT INTO t_activity_weather (activity_weather_id, fk_activity, fk_weather, score)
                                                     VALUES (NULL, %(value_fk_genre)s, %(value_fk_film)s)"""
 
             # SQL pour effacer une (des) association(s) existantes entre "weather_id" et "activity_id" dans la "t_activity_weather"
-            strsql_delete_genre_film = """DELETE FROM t_activity_environ WHERE fk_activity = %(value_fk_genre)s AND fk_environ = %(value_fk_film)s"""
+            strsql_delete_genre_film = """DELETE FROM t_activity_weather WHERE fk_activity = %(value_fk_genre)s AND fk_weather = %(value_fk_film)s"""
 
             with DBconnection() as mconn_bd:
                 # Pour le film sélectionné, parcourir la liste des genres à INSÉRER dans la "t_activity_weather".
@@ -262,7 +261,7 @@ def update_activity_environ_selected():
 
     # Après cette mise à jour de la table intermédiaire "t_activity_weather",
     # on affiche les films et le(urs) genre(s) associé(s).
-    return redirect(url_for('activity_environs_afficher', id_film_sel=id_film_selected))
+    return redirect(url_for('films_genres_afficher', id_film_sel=id_film_selected))
 
 
 """
@@ -282,15 +281,15 @@ def activity_environs_afficher_data(valeur_id_film_selected_dict):
                           FROM t_activity_environ
                           INNER JOIN t_environ ON t_environ.environ_id = t_activity_environ.fk_environ
                           INNER JOIN t_activity ON t_activity.activity_id = t_activity_environ.fk_activity
-                          WHERE environ_id = %(value_id_film_selected)s
-                       """
+                          WHERE weather_id = %(value_id_film_selected)s
+                          GROUP BY environ_id, environ_name"""
 
-        strsql_genres_films_non_attribues = """SELECT activity_id, name_activity FROM t_activity WHERE activity_id not in(SELECT activity_id as idActivityWeather FROM t_activity_environ
+        strsql_genres_films_non_attribues = """SELECT activity_id, name_activity FROM t_activity WHERE activity_id not in(SELECT activity_id as idActivityEnviron FROM t_activity_environ
+                                                    INNER JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
                                                     INNER JOIN t_environ ON t_environ.environ_id = t_activity_environ.fk_environ
-                                                    INNER JOIN t_activity ON t_activity.activity_id = t_activity_environ.fk_activity
                                                     WHERE environ_id = %(value_id_film_selected)s)"""
 
-        strsql_genres_films_attribues = """SELECT environ_id, activity_id, name_activity FROM t_activity_environ
+        strsql_genres_films_attribues = """SELECT environ_id, activity_id, environ_name FROM t_activity_environ
                                             INNER JOIN t_environ ON t_environ.environ_id = t_activity_environ.fk_environ
                                             INNER JOIN t_activity ON t_activity.activity_id = t_activity_environ.fk_activity
                                             WHERE environ_id = %(value_id_film_selected)s"""

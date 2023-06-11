@@ -28,13 +28,13 @@ from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFUpdateGenre
 """
 
 
-@app.route("/environs_afficher/<string:order_by>/<int:id_genre_sel>", methods=['GET', 'POST'])
-def environs_afficher(order_by, id_genre_sel):
+@app.route("/weathers_afficher/<string:order_by>/<int:id_genre_sel>", methods=['GET', 'POST'])
+def weathers_afficher(order_by, id_genre_sel):
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
                 if order_by == "ASC" and id_genre_sel == 0:
-                    strsql_genres_afficher = """SELECT environ_id,environ_name FROM t_environ ORDER BY environ_id DESC"""
+                    strsql_genres_afficher = """SELECT weather_id,name_weather FROM t_weather ORDER BY weather_id DESC"""
                     mc_afficher.execute(strsql_genres_afficher)
                 elif order_by == "ASC":
                     # C'EST LA QUE VOUS ALLEZ DEVOIR PLACER VOTRE PROPRE LOGIQUE MySql
@@ -43,11 +43,11 @@ def environs_afficher(order_by, id_genre_sel):
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du genre sélectionné avec un nom de variable
                     valeur_id_genre_selected_dictionnaire = {"value_id_genre_selected": id_genre_sel}
-                    strsql_genres_afficher = """SELECT environ_id,environ_name FROM t_environ WHERE environ_id = %(value_id_genre_selected)s"""
+                    strsql_genres_afficher = """SELECT weather_id,name_weather FROM t_weather WHERE weather_id = %(value_id_genre_selected)s"""
 
                     mc_afficher.execute(strsql_genres_afficher, valeur_id_genre_selected_dictionnaire)
                 else:
-                    strsql_genres_afficher = """SELECT environ_id,environ_name  FROM t_environ ORDER BY environ_id DESC"""
+                    strsql_genres_afficher = """SELECT weather_id,name_weather  FROM t_weather ORDER BY weather_id DESC"""
 
                     mc_afficher.execute(strsql_genres_afficher)
 
@@ -68,11 +68,11 @@ def environs_afficher(order_by, id_genre_sel):
 
         except Exception as Exception_genres_afficher:
             raise ExceptionGenresAfficher(f"fichier : {Path(__file__).name}  ;  "
-                                          f"{environs_afficher.__name__} ; "
+                                          f"{weathers_afficher.__name__} ; "
                                           f"{Exception_genres_afficher}")
 
     # Envoie la page "HTML" au serveur.
-    return render_template("environs/environs_afficher.html", data=data_genres)
+    return render_template("weathers/weathers_afficher.html", data=data_genres)
 
 
 """
@@ -95,8 +95,8 @@ def environs_afficher(order_by, id_genre_sel):
 """
 
 
-@app.route("/environs_ajouter", methods=['GET', 'POST'])
-def environs_ajouter_wtf():
+@app.route("/weathers_ajouter", methods=['GET', 'POST'])
+def weathers_ajouter_wtf():
     form = FormWTFAjouterGenres()
     if request.method == "POST":
         try:
@@ -106,7 +106,7 @@ def environs_ajouter_wtf():
                 valeurs_insertion_dictionnaire = {"value_intitule_genre": name_genre}
                 print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire)
 
-                strsql_insert_genre = """INSERT INTO t_environ (environ_id,environ_name) VALUES (NULL,%(value_intitule_genre)s) """
+                strsql_insert_genre = """INSERT INTO t_weather (weather_id,name_weather) VALUES (NULL,%(value_intitule_genre)s) """
                 with DBconnection() as mconn_bd:
                     mconn_bd.execute(strsql_insert_genre, valeurs_insertion_dictionnaire)
 
@@ -114,11 +114,11 @@ def environs_ajouter_wtf():
                 print(f"Données insérées !!")
 
                 # Pour afficher et constater l'insertion de la valeur, on affiche en ordre inverse. (DESC)
-                return redirect(url_for('environs_afficher', order_by='DESC', id_genre_sel=0))
+                return redirect(url_for('weathers_afficher', order_by='DESC', id_genre_sel=0))
 
         except Exception as Exception_genres_ajouter_wtf:
             raise ExceptionGenresAjouterWtf(f"fichier : {Path(__file__).name}  ;  "
-                                            f"{environs_ajouter_wtf.__name__} ; "
+                                            f"{weathers_ajouter_wtf.__name__} ; "
                                             f"{Exception_genres_ajouter_wtf}")
 
     return render_template("genres/genres_ajouter_wtf.html", form=form)
@@ -144,8 +144,8 @@ def environs_ajouter_wtf():
 """
 
 
-@app.route("/environ_update", methods=['GET', 'POST'])
-def environ_update_wtf():
+@app.route("/weather_update", methods=['GET', 'POST'])
+def weather_update_wtf():
     # L'utilisateur vient de cliquer sur le bouton "EDIT". Récupère la valeur de "activity_id"
     id_genre_update = request.values['id_genre_btn_edit_html']
 
@@ -164,8 +164,8 @@ def environ_update_wtf():
                                           }
             print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
 
-            str_sql_update_intitulegenre = """UPDATE t_environ SET environ_name = %(value_name_genre)s
-          WHERE environ_id = %(value_id_genre)s """
+            str_sql_update_intitulegenre = """UPDATE t_weather SET name_weather = %(value_name_genre)s
+          WHERE weather_id = %(value_id_genre)s """
             with DBconnection() as mconn_bd:
                 mconn_bd.execute(str_sql_update_intitulegenre, valeur_update_dictionnaire)
 
@@ -174,28 +174,28 @@ def environ_update_wtf():
 
             # afficher et constater que la donnée est mise à jour.
             # Affiche seulement la valeur modifiée, "ASC" et l'"id_genre_update"
-            return redirect(url_for('environs_afficher', order_by="ASC", id_genre_sel=id_genre_update))
+            return redirect(url_for('weathers_afficher', order_by="ASC", id_genre_sel=id_genre_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "activity_id" et "intitule_genre" de la "t_genre"
-            str_sql_id_genre = "SELECT environ_id, environ_name FROM t_environ " \
-                               "WHERE environ_id = %(value_id_genre)s"
+            str_sql_id_genre = "SELECT weather_id, name_weather FROM t_weather " \
+                               "WHERE weather_id = %(value_id_genre)s"
             valeur_select_dictionnaire = {"value_id_genre": id_genre_update}
             with DBconnection() as mybd_conn:
                 mybd_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
             # Une seule valeur est suffisante "fetchone()", vu qu'il n'y a qu'un seul champ "nom genre" pour l'UPDATE
             data_nom_genre = mybd_conn.fetchone()
-            print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " environ ",
-                  data_nom_genre["environ_name"])
+            print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
+                  data_nom_genre["name_weather"])
 
             # Afficher la valeur sélectionnée dans les champs du formulaire "environ_update_wtf.html"
-            form_update.nom_genre_update_wtf.data = data_nom_genre["environ_name"]
+            form_update.nom_genre_update_wtf.data = data_nom_genre["name_weather"]
 
     except Exception as Exception_genre_update_wtf:
         raise ExceptionGenreUpdateWtf(f"fichier : {Path(__file__).name}  ;  "
-                                      f"{environ_update_wtf.__name__} ; "
+                                      f"{weather_update_wtf.__name__} ; "
                                       f"{Exception_genre_update_wtf}")
 
-    return render_template("environs/environ_update_wtf.html", form_update=form_update)
+    return render_template("weathers/weather_update_wtf.html", form_update=form_update)
 
 
 """
@@ -213,8 +213,8 @@ def environ_update_wtf():
 """
 
 
-@app.route("/environ_delete", methods=['GET', 'POST'])
-def environ_delete_wtf():
+@app.route("/weather_delete", methods=['GET', 'POST'])
+def weather_delete_wtf():
     data_films_attribue_genre_delete = None
     btn_submit_del = None
     # L'utilisateur vient de cliquer sur le bouton "DELETE". Récupère la valeur de "activity_id"
@@ -227,7 +227,7 @@ def environ_delete_wtf():
         if request.method == "POST" and form_delete.validate_on_submit():
 
             if form_delete.submit_btn_annuler.data:
-                return redirect(url_for("environs_afficher", order_by="ASC", id_genre_sel=0))
+                return redirect(url_for("genres_afficher", order_by="ASC", id_genre_sel=0))
 
             if form_delete.submit_btn_conf_del.data:
                 # Récupère les données afin d'afficher à nouveau
@@ -244,8 +244,8 @@ def environ_delete_wtf():
                 valeur_delete_dictionnaire = {"value_id_genre": id_genre_delete}
                 print("valeur_delete_dictionnaire ", valeur_delete_dictionnaire)
 
-                str_sql_delete_films_genre = """DELETE FROM t_activity_environ WHERE fk_environ = %(value_id_genre)s"""
-                str_sql_delete_idgenre = """DELETE FROM t_environ WHERE environ_id = %(value_id_genre)s"""
+                str_sql_delete_films_genre = """DELETE FROM t_activity_weather WHERE fk_weather = %(value_id_genre)s"""
+                str_sql_delete_idgenre = """DELETE FROM t_weather WHERE weather_id = %(value_id_genre)s"""
                 # Manière brutale d'effacer d'abord la "fk_genre", même si elle n'existe pas dans la "t_activity_weather"
                 # Ensuite on peut effacer le genre vu qu'il n'est plus "lié" (INNODB) dans la "t_activity_weather"
                 with DBconnection() as mconn_bd:
@@ -256,16 +256,16 @@ def environ_delete_wtf():
                 print(f"Genre définitivement effacé !!")
 
                 # afficher les données
-                return redirect(url_for('environs_afficher', order_by="ASC", id_genre_sel=0))
+                return redirect(url_for('weathers_afficher', order_by="ASC", id_genre_sel=0))
 
         if request.method == "GET":
             valeur_select_dictionnaire = {"value_id_genre": id_genre_delete}
             print(id_genre_delete, type(id_genre_delete))
 
             # Requête qui affiche tous les films_genres qui ont le genre que l'utilisateur veut effacer
-            str_sql_genres_films_delete = """SELECT activity_environ_id, name_activity, activity_id,environ_id FROM t_activity_environ
-                                            INNER JOIN t_environ ON t_activity_environ.fk_environ = t_environ.environ_id
-                                            INNER JOIN t_activity ON t_activity_environ.fk_activity = t_activity.activity_id
+            str_sql_genres_films_delete = """SELECT activity_weather_id, name_activity, activity_id,weather_id, score FROM t_activity_weather
+                                            INNER JOIN t_weather ON t_activity_weather.fk_weather = t_weather.weather_id
+                                            INNER JOIN t_activity ON t_activity_weather.fk_activity = t_activity.activity_id
                                             WHERE fk_activity = %(value_id_genre)s"""
 
             with DBconnection() as mydb_conn:
@@ -278,27 +278,27 @@ def environ_delete_wtf():
                 session['data_films_attribue_genre_delete'] = data_films_attribue_genre_delete
 
                 # Opération sur la BD pour récupérer "activity_id" et "intitule_genre" de la "t_genre"
-                str_sql_id_genre = "SELECT environ_id, environ_name FROM t_environ WHERE environ_id = %(value_id_genre)s"
+                str_sql_id_genre = "SELECT weather_id, name_weather FROM t_weather WHERE weather_id = %(value_id_genre)s"
 
                 mydb_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
                 # Une seule valeur est suffisante "fetchone()",
                 # vu qu'il n'y a qu'un seul champ "nom genre" pour l'action DELETE
                 data_nom_genre = mydb_conn.fetchone()
-                print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " environ ",
-                      data_nom_genre["environ_name"])
+                print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " weather ",
+                      data_nom_genre["name_weather"])
 
             # Afficher la valeur sélectionnée dans le champ du formulaire "environ_delete_wtf.html"
-            form_delete.nom_genre_delete_wtf.data = data_nom_genre["environ_name"]
+            form_delete.nom_genre_delete_wtf.data = data_nom_genre["name_weather"]
 
             # Le bouton pour l'action "DELETE" dans le form. "environ_delete_wtf.html" est caché.
             btn_submit_del = False
 
     except Exception as Exception_genre_delete_wtf:
         raise ExceptionGenreDeleteWtf(f"fichier : {Path(__file__).name}  ;  "
-                                      f"{environ_delete_wtf.__name__} ; "
+                                      f"{weather_delete_wtf.__name__} ; "
                                       f"{Exception_genre_delete_wtf}")
 
-    return render_template("environs/environ_delete_wtf.html",
+    return render_template("genres/genre_delete_wtf.html",
                            form_delete=form_delete,
                            btn_submit_del=btn_submit_del,
                            data_films_associes=data_films_attribue_genre_delete)
