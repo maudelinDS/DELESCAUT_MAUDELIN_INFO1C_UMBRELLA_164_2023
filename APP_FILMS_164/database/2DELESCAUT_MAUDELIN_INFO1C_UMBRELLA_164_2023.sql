@@ -22,7 +22,7 @@ CREATE TABLE t_temperature
 
 
 
-CREATE TABLE t_environ
+CREATE TABLE t_weather
 (
     environ_id   int PRIMARY KEY auto_increment NOT NULL,
     environ_name VARCHAR(30) UNIQUE             NOT NULL
@@ -81,7 +81,7 @@ CREATE TABLE t_activity_environ
     fk_environ  INT NOT NULL,
     fk_activity INT NOT NULL,
     PRIMARY KEY (activity_environ_id),
-    FOREIGN KEY (fk_environ) REFERENCES t_environ (environ_id),
+    FOREIGN KEY (fk_environ) REFERENCES t_weather (environ_id),
     FOREIGN KEY (fk_activity) REFERENCES t_activity (activity_id)
 );
 
@@ -140,7 +140,7 @@ INSERT INTO t_weather (weather_id, name_weather) VALUES (DEFAULT, 'Orageux');
 INSERT INTO t_weather (weather_id, name_weather) VALUES (DEFAULT, 'Enneigé');
 INSERT INTO t_weather (weather_id, name_weather) VALUES (DEFAULT, 'Nuageux');
 INSERT INTO t_weather (weather_id, name_weather) VALUES (DEFAULT, 'Pluvieux');
-INSERT INTO t_weather (weather_id, name_weather) VALUES (DEFAULT, 'Ensoleillée');
+INSERT INTO t_environ (weather_id, name_weather) VALUES (DEFAULT, 'Ensoleillée');
 
 
 INSERT INTO t_temperature (temp_id, temp_name) VALUES (DEFAULT, 'Hot');

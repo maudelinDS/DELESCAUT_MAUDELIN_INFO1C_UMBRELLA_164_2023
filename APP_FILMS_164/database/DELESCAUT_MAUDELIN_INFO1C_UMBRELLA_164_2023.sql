@@ -135,10 +135,10 @@ INSERT INTO `t_temperature` VALUES (2,'Cold'),(1,'Hot'),(3,'Medium');
 UNLOCK TABLES;
 
 --
--- Table structure for table `t_weather`
+-- Table structure for table `t_environ`
 --
 
-DROP TABLE IF EXISTS `t_weather`;
+DROP TABLE IF EXISTS `t_environ`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `t_weather` (
