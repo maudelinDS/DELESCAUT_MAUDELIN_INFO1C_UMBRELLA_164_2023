@@ -121,7 +121,7 @@ def environs_ajouter_wtf():
                                             f"{environs_ajouter_wtf.__name__} ; "
                                             f"{Exception_genres_ajouter_wtf}")
 
-    return render_template("genres/genres_ajouter_wtf.html", form=form)
+    return render_template("environs/environs_ajouter_wtf.html", form=form)
 
 
 """
@@ -184,7 +184,7 @@ def environ_update_wtf():
                 mybd_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
             # Une seule valeur est suffisante "fetchone()", vu qu'il n'y a qu'un seul champ "nom genre" pour l'UPDATE
             data_nom_genre = mybd_conn.fetchone()
-            print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " environ ",
+            print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
                   data_nom_genre["environ_name"])
 
             # Afficher la valeur sélectionnée dans les champs du formulaire "environ_update_wtf.html"
@@ -284,7 +284,7 @@ def environ_delete_wtf():
                 # Une seule valeur est suffisante "fetchone()",
                 # vu qu'il n'y a qu'un seul champ "nom genre" pour l'action DELETE
                 data_nom_genre = mydb_conn.fetchone()
-                print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " environ ",
+                print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
                       data_nom_genre["environ_name"])
 
             # Afficher la valeur sélectionnée dans le champ du formulaire "environ_delete_wtf.html"
