@@ -34,7 +34,7 @@ def genres_afficher(order_by, id_genre_sel):
         try:
             with DBconnection() as mc_afficher:
                 if order_by == "ASC" and id_genre_sel == 0:
-                    strsql_genres_afficher = """SELECT activity_id,activity_name FROM t_activity ORDER BY activity_id DESC"""
+                    strsql_genres_afficher = """SELECT activity_id,name_activity FROM t_activity ORDER BY activity_id DESC"""
                     mc_afficher.execute(strsql_genres_afficher)
                 elif order_by == "ASC":
                     # C'EST LA QUE VOUS ALLEZ DEVOIR PLACER VOTRE PROPRE LOGIQUE MySql
@@ -43,11 +43,11 @@ def genres_afficher(order_by, id_genre_sel):
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du genre sélectionné avec un nom de variable
                     valeur_id_genre_selected_dictionnaire = {"value_id_genre_selected": id_genre_sel}
-                    strsql_genres_afficher = """SELECT activity_id,activity_name FROM t_activity WHERE activity_id = %(value_id_genre_selected)s"""
+                    strsql_genres_afficher = """SELECT activity_id,name_activity FROM t_activity WHERE activity_id = %(value_id_genre_selected)s"""
 
                     mc_afficher.execute(strsql_genres_afficher, valeur_id_genre_selected_dictionnaire)
                 else:
-                    strsql_genres_afficher = """SELECT activity_id,activity_name  FROM t_activity ORDER BY activity_id DESC"""
+                    strsql_genres_afficher = """SELECT activity_id,name_activity  FROM t_activity ORDER BY activity_id DESC"""
 
                     mc_afficher.execute(strsql_genres_afficher)
 
@@ -106,7 +106,7 @@ def genres_ajouter_wtf():
                 valeurs_insertion_dictionnaire = {"value_intitule_genre": name_genre}
                 print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire)
 
-                strsql_insert_genre = """INSERT INTO t_activity (activity_id,activity_name) VALUES (NULL,%(value_intitule_genre)s) """
+                strsql_insert_genre = """INSERT INTO t_activity (activity_id,name_activity) VALUES (NULL,%(value_intitule_genre)s) """
                 with DBconnection() as mconn_bd:
                     mconn_bd.execute(strsql_insert_genre, valeurs_insertion_dictionnaire)
 
@@ -164,7 +164,7 @@ def genre_update_wtf():
                                           }
             print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
 
-            str_sql_update_intitulegenre = """UPDATE t_activity SET activity_name = %(value_name_genre)s
+            str_sql_update_intitulegenre = """UPDATE t_activity SET name_activity = %(value_name_genre)s
           WHERE activity_id = %(value_id_genre)s """
             with DBconnection() as mconn_bd:
                 mconn_bd.execute(str_sql_update_intitulegenre, valeur_update_dictionnaire)
@@ -177,7 +177,7 @@ def genre_update_wtf():
             return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=id_genre_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "activity_id" et "intitule_genre" de la "t_genre"
-            str_sql_id_genre = "SELECT activity_id, activity_name FROM t_activity " \
+            str_sql_id_genre = "SELECT activity_id, name_activity FROM t_activity " \
                                "WHERE activity_id = %(value_id_genre)s"
             valeur_select_dictionnaire = {"value_id_genre": id_genre_update}
             with DBconnection() as mybd_conn:
@@ -185,10 +185,10 @@ def genre_update_wtf():
             # Une seule valeur est suffisante "fetchone()", vu qu'il n'y a qu'un seul champ "nom genre" pour l'UPDATE
             data_nom_genre = mybd_conn.fetchone()
             print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
-                  data_nom_genre["activity_name"])
+                  data_nom_genre["name_activity"])
 
             # Afficher la valeur sélectionnée dans les champs du formulaire "environ_update_wtf.html"
-            form_update.nom_genre_update_wtf.data = data_nom_genre["activity_name"]
+            form_update.nom_genre_update_wtf.data = data_nom_genre["name_activity"]
 
     except Exception as Exception_genre_update_wtf:
         raise ExceptionGenreUpdateWtf(f"fichier : {Path(__file__).name}  ;  "
@@ -263,7 +263,7 @@ def genre_delete_wtf():
             print(id_genre_delete, type(id_genre_delete))
 
             # Requête qui affiche tous les films_genres qui ont le genre que l'utilisateur veut effacer
-            str_sql_genres_films_delete = """SELECT activity_weather_id, activity_name, activity_id,weather_id, score FROM t_activity_weather
+            str_sql_genres_films_delete = """SELECT activity_weather_id, name_activity, activity_id,weather_id, score FROM t_activity_weather
                                             INNER JOIN t_weather ON t_activity_weather.fk_weather = t_weather.weather_id
                                             INNER JOIN t_activity ON t_activity_weather.fk_activity = t_activity.activity_id
                                             WHERE fk_activity = %(value_id_genre)s"""
@@ -278,17 +278,17 @@ def genre_delete_wtf():
                 session['data_films_attribue_genre_delete'] = data_films_attribue_genre_delete
 
                 # Opération sur la BD pour récupérer "activity_id" et "intitule_genre" de la "t_genre"
-                str_sql_id_genre = "SELECT activity_id, activity_name FROM t_activity WHERE activity_id = %(value_id_genre)s"
+                str_sql_id_genre = "SELECT activity_id, name_activity FROM t_activity WHERE activity_id = %(value_id_genre)s"
 
                 mydb_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
                 # Une seule valeur est suffisante "fetchone()",
                 # vu qu'il n'y a qu'un seul champ "nom genre" pour l'action DELETE
                 data_nom_genre = mydb_conn.fetchone()
                 print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
-                      data_nom_genre["activity_name"])
+                      data_nom_genre["name_activity"])
 
             # Afficher la valeur sélectionnée dans le champ du formulaire "environ_delete_wtf.html"
-            form_delete.nom_genre_delete_wtf.data = data_nom_genre["activity_name"]
+            form_delete.nom_genre_delete_wtf.data = data_nom_genre["name_activity"]
 
             # Le bouton pour l'action "DELETE" dans le form. "environ_delete_wtf.html" est caché.
             btn_submit_del = False

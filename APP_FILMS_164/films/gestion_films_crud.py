@@ -40,7 +40,7 @@ def film_add_wtf():
                 valeurs_insertion_dictionnaire = {"value_nom_film": nom_film_add}
                 print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire)
 
-                strsql_insert_film = """INSERT INTO t_weather (weather_id,weather_name) VALUES (NULL,%(value_nom_film)s) """
+                strsql_insert_film = """INSERT INTO t_weather (weather_id,name_weather) VALUES (NULL,%(value_nom_film)s) """
                 with DBconnection() as mconn_bd:
                     mconn_bd.execute(strsql_insert_film, valeurs_insertion_dictionnaire)
 
@@ -92,7 +92,7 @@ def film_update_wtf():
                                           }
             print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
 
-            str_sql_update_nom_film = """UPDATE t_weather SET weather_name = %(value_nom_film)s
+            str_sql_update_nom_film = """UPDATE t_weather SET name_weather = %(value_nom_film)s
                                                             WHERE weather_id = %(value_id_film)s"""
             with DBconnection() as mconn_bd:
                 mconn_bd.execute(str_sql_update_nom_film, valeur_update_dictionnaire)
@@ -113,10 +113,10 @@ def film_update_wtf():
             # Une seule valeur est suffisante "fetchone()", vu qu'il n'y a qu'un seul champ "nom genre" pour l'UPDATE
             data_film = mybd_conn.fetchone()
             print("data_film ", data_film, " type ", type(data_film), " weather ",
-                  data_film["weather_name"])
+                  data_film["name_weather"])
 
             # Afficher la valeur sélectionnée dans le champ du formulaire "film_update_wtf.html"
-            form_update_film.nom_film_update_wtf.data = data_film["weather_name"]
+            form_update_film.nom_film_update_wtf.data = data_film["name_weather"]
             # Debug simple pour contrôler la valeur dans la console "run" de PyCharm
 
     except Exception as Exception_film_update_wtf:

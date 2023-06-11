@@ -54,7 +54,11 @@ try:
     from APP_FILMS_164.environs import gestion_environs_crud
     from APP_FILMS_164.environs import gestion_environs_wtf_forms
 
+    from APP_FILMS_164.seasons import gestion_seasons_crud
+    from APP_FILMS_164.seasons import gestion_seasons_wtf_forms
 
+    from APP_FILMS_164.temperatures import gestion_temps_crud
+    from APP_FILMS_164.temperatures import gestion_temps_wtf_forms
 
 except Exception as Exception_init_app_films_164:
     print(f"4567756434 Une erreur est survenue {type(Exception_init_app_films_164)} dans"

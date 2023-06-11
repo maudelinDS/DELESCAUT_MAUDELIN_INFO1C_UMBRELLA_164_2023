@@ -50,11 +50,19 @@
 					</li>
                       <li class="nav-item">
                         <!--		Afficher la liste des genres dans l'ordre (ASC) et tous les genres (0)-->
-                        <a class="nav-link" href="{{ url_for('films_genres_afficher', order_by='ASC', id_film_sel=0) }}">Météo</a>
+                        <a class="nav-link" href="{{ url_for('films_genres_afficher', order_by='ASC', id_film_sel=0) }}">Météos</a>
                     </li>
                     <li class="nav-item">
                         <!--		Afficher la liste des genres dans l'ordre (ASC) et tous les genres (0)-->
-                        <a class="nav-link" href="{{ url_for('environs_afficher', order_by='ASC', id_genre_sel=0) }}">Environemment</a>
+                        <a class="nav-link" href="{{ url_for('environs_afficher', order_by='ASC', id_genre_sel=0) }}">Environemments</a>
+                    </li>
+                    <li class="nav-item">
+                        <!--		Afficher la liste des genres dans l'ordre (ASC) et tous les genres (0)-->
+                        <a class="nav-link" href="{{ url_for('seasons_afficher', order_by='ASC', id_genre_sel=0) }}">Saisons</a>
+                    </li>
+                    <li class="nav-item">
+                        <!--		Afficher la liste des genres dans l'ordre (ASC) et tous les genres (0)-->
+                        <a class="nav-link" href="{{ url_for('temps_afficher', order_by='ASC', id_genre_sel=0) }}">Températures</a>
                     </li>
 
 

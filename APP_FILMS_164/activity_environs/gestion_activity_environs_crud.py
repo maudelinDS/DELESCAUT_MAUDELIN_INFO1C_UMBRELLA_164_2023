@@ -32,7 +32,7 @@ def activity_environs_afficher(id_film_sel):
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
-                strsql_genres_films_afficher_data = """SELECT t_environ.environ_id, t_environ.environ_name, GROUP_CONCAT(t_activity.activity_name) AS ActivityEnviron
+                strsql_genres_films_afficher_data = """SELECT t_environ.environ_id, t_environ.environ_name, GROUP_CONCAT(t_activity.name_activity) AS ActivityEnviron
 FROM t_activity_environ
 RIGHT JOIN t_environ ON t_environ.environ_id = t_activity_environ.fk_environ
 LEFT JOIN t_activity ON t_activity.activity_id = t_activity_environ.fk_activity
@@ -95,7 +95,7 @@ def     edit_activity_environ_selected():
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
-                strsql_genres_afficher = """SELECT activity_id, activity_name FROM t_activity ORDER BY activity_id ASC"""
+                strsql_genres_afficher = """SELECT activity_id, name_activity FROM t_activity ORDER BY activity_id ASC"""
                 mc_afficher.execute(strsql_genres_afficher)
             data_genres_all = mc_afficher.fetchall()
             print("dans edit_genre_film_selected ---> data_genres_all", data_genres_all)
@@ -150,7 +150,7 @@ def     edit_activity_environ_selected():
 
             # Extrait les valeurs contenues dans la table "t_genres", colonne "activity_name"
             # Le composant javascript "tagify" pour afficher les tags n'a pas besoin de l'activity_id
-            lst_data_genres_films_non_attribues = [item['activity_name'] for item in data_genres_films_non_attribues]
+            lst_data_genres_films_non_attribues = [item['name_activity'] for item in data_genres_films_non_attribues]
             print("lst_all_genres gf_edit_genre_film_selected ", lst_data_genres_films_non_attribues,
                   type(lst_data_genres_films_non_attribues))
 
@@ -285,12 +285,12 @@ def activity_environs_afficher_data(valeur_id_film_selected_dict):
                           WHERE environ_id = %(value_id_film_selected)s
                        """
 
-        strsql_genres_films_non_attribues = """SELECT activity_id, activity_name FROM t_activity WHERE activity_id not in(SELECT activity_id as idActivityWeather FROM t_activity_environ
+        strsql_genres_films_non_attribues = """SELECT activity_id, name_activity FROM t_activity WHERE activity_id not in(SELECT activity_id as idActivityWeather FROM t_activity_environ
                                                     INNER JOIN t_environ ON t_environ.environ_id = t_activity_environ.fk_environ
                                                     INNER JOIN t_activity ON t_activity.activity_id = t_activity_environ.fk_activity
                                                     WHERE environ_id = %(value_id_film_selected)s)"""
 
-        strsql_genres_films_attribues = """SELECT environ_id, activity_id, activity_name FROM t_activity_environ
+        strsql_genres_films_attribues = """SELECT environ_id, activity_id, name_activity FROM t_activity_environ
                                             INNER JOIN t_environ ON t_environ.environ_id = t_activity_environ.fk_environ
                                             INNER JOIN t_activity ON t_activity.activity_id = t_activity_environ.fk_activity
                                             WHERE environ_id = %(value_id_film_selected)s"""

@@ -32,11 +32,11 @@ def films_genres_afficher(id_film_sel):
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
-                strsql_genres_films_afficher_data = """SELECT t_weather.weather_id, t_weather.weather_name, GROUP_CONCAT(t_activity.activity_name) AS ActivityWeather
+                strsql_genres_films_afficher_data = """SELECT t_weather.weather_id, t_weather.name_weather, GROUP_CONCAT(t_activity.name_activity) AS ActivityWeather
 FROM t_activity_weather
 RIGHT JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
 LEFT JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
-GROUP BY t_weather.weather_id, t_weather.weather_name
+GROUP BY t_weather.weather_id, t_weather.name_weather
 """
                 if id_film_sel == 0:
                     # le paramètre 0 permet d'afficher tous les films
@@ -94,7 +94,7 @@ def edit_genre_film_selected():
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
-                strsql_genres_afficher = """SELECT activity_id, activity_name FROM t_activity ORDER BY activity_id ASC"""
+                strsql_genres_afficher = """SELECT activity_id, name_activity FROM t_activity ORDER BY activity_id ASC"""
                 mc_afficher.execute(strsql_genres_afficher)
             data_genres_all = mc_afficher.fetchall()
             print("dans edit_genre_film_selected ---> data_genres_all", data_genres_all)
@@ -149,7 +149,7 @@ def edit_genre_film_selected():
 
             # Extrait les valeurs contenues dans la table "t_genres", colonne "activity_name"
             # Le composant javascript "tagify" pour afficher les tags n'a pas besoin de l'activity_id
-            lst_data_genres_films_non_attribues = [item['activity_name'] for item in data_genres_films_non_attribues]
+            lst_data_genres_films_non_attribues = [item['name_activity'] for item in data_genres_films_non_attribues]
             print("lst_all_genres gf_edit_genre_film_selected ", lst_data_genres_films_non_attribues,
                   type(lst_data_genres_films_non_attribues))
 
@@ -277,19 +277,19 @@ def update_genre_film_selected():
 def genres_films_afficher_data(valeur_id_film_selected_dict):
     print("valeur_id_film_selected_dict...", valeur_id_film_selected_dict)
     try:
-        strsql_film_selected = """SELECT weather_id, score, weather_name,  GROUP_CONCAT(activity_id) as ActivityWeather
+        strsql_film_selected = """SELECT weather_id, score, name_weather,  GROUP_CONCAT(activity_id) as ActivityWeather
                           FROM t_activity_weather
                           INNER JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
                           INNER JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
                           WHERE weather_id = %(value_id_film_selected)s
-                          GROUP BY weather_id, score, weather_name"""
+                          GROUP BY weather_id, score, name_weather"""
 
-        strsql_genres_films_non_attribues = """SELECT activity_id, activity_name FROM t_activity WHERE activity_id not in(SELECT activity_id as idActivityWeather FROM t_activity_weather
+        strsql_genres_films_non_attribues = """SELECT activity_id, name_activity FROM t_activity WHERE activity_id not in(SELECT activity_id as idActivityWeather FROM t_activity_weather
                                                     INNER JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
                                                     INNER JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
                                                     WHERE weather_id = %(value_id_film_selected)s)"""
 
-        strsql_genres_films_attribues = """SELECT weather_id, activity_id, activity_name FROM t_activity_weather
+        strsql_genres_films_attribues = """SELECT weather_id, activity_id, name_activity FROM t_activity_weather
                                             INNER JOIN t_weather ON t_weather.weather_id = t_activity_weather.fk_weather
                                             INNER JOIN t_activity ON t_activity.activity_id = t_activity_weather.fk_activity
                                             WHERE weather_id = %(value_id_film_selected)s"""
